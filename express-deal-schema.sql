@@ -115,7 +115,7 @@ CREATE TABLE location (
   date_location DATETIME NOT NULL,
   inventaire_id int(10) NOT NULL,
   client_id int(10) NOT NULL,
-  return_date DATETIME DEFAULT NULL,
+  date_retour DATETIME DEFAULT NULL,
   employe_id int(10)  NOT NULL,
   updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (location_id),

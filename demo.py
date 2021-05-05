@@ -85,8 +85,9 @@ def index():
     # cursor.connection.commit()
     # cnx.commit() # don't need , if we put autocommit=True
 
+    # each row is a tuple
     # + -> fetchone() : first row
-    # + -> fetchall() : all the rows
+    # + -> fetchall() : all the rows (tuple inside tuples)
 
     # ? insert,update,delet returns no row , samething for select , if there are no row
     # so fetchone() -> None

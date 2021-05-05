@@ -17,6 +17,10 @@ def connect_to_mysql_database(app,  db_host, db_user, db_name, db_password, db_p
     return mysql.connect()
 
 
+def truncate(string, length):
+    return string[0:length] + '...'
+
+
 def insert_item():
     pass
 
