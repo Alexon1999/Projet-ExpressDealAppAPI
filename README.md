@@ -1,4 +1,4 @@
-# <center>**Express Deal Api**</center>
+<h1 style="text-align:center; font-weight:bold;"> Express Deal Api </h1>
 
 #### Cette api est fait avec **Flask** (python web framework)
 
