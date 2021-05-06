@@ -1,12 +1,11 @@
 import os
 import json
-from flask import Flask, render_template, request, Response, jsonify
-from pymysql import cursors
-from werkzeug.exceptions import HTTPException
-import utils
-from models import Categorie, Client, Inventaire, Location, Materiel
-from dotenv import load_dotenv
 from pathlib import Path
+from flask import Flask, render_template, request, Response, jsonify
+from werkzeug.exceptions import HTTPException
+from dotenv import load_dotenv
+from models import Categorie, Client, Inventaire, Location, Materiel
+import utils
 
 # load environment variables
 env_path = Path('.') / '.env'
@@ -15,9 +14,11 @@ load_dotenv(env_path)
 # créer un objet Flask
 app = Flask(__name__)
 
-# avoir l'objet connexion pour la base de données , à mettre dans un fichier .env (variable d'environnement)
+# avoir l'objet connexion pour la base de données
 cnx = utils.connect_to_mysql_database(
-    app, os.environ['db_host'], os.environ['db_user'], os.environ['db_name'], os.environ['db_password'], int(os.environ['db_port']),  autocommit=True)
+    app, os.environ['db_host'], os.environ['db_user'], os.environ['db_name'],
+    os.environ['db_password'], int(os.environ['db_port']),
+    autocommit=True)
 
 
 @app.route('/', methods=['GET', 'POST'])
@@ -287,7 +288,7 @@ def get_nb_location_aujourdhui():
 
 # le magasin avec plus de chiffre d'affaire
 @ app.route('/get_magasin_plus_CA', methods=['GET'])
-def get_magasin_plus_CA():
+def get_magasin_plus_ca():
     cursor = cnx.cursor()
     cursor.execute('SELECT * FROM magain_tries_par_ca')
     data = cursor.fetchone()
@@ -302,7 +303,7 @@ def get_materiel_plus_moins_empruntes():
     cursor.execute('SELECT * FROM materiel_tries_par_nbemprunts')
     data = cursor.fetchall()
     cursor.close()
-    if len(data):
+    if len(data) != 0:
         materiel_plus_empruntes = {
             "idMateriel": data[0][0], "nomMateriel": data[0][1], "nbEmprunts": data[0][2]}
         materiel_moins_empruntes = {
@@ -320,15 +321,15 @@ def get_materiel_plus_moins_empruntes():
 
 
 @ app.errorhandler(HTTPException)
-def handle_exception(e):
+def handle_exception(error):
     """Return JSON instead of HTML for HTTP errors."""
     # start with the correct headers and status code from the error
-    response = e.get_response()
+    response = error.get_response()
     # replace the body with JSON
     response.data = json.dumps({
-        "code": e.code,
-        "name": e.name,
-        "description": e.description,
+        "code": error.code,
+        "name": error.name,
+        "description": error.description,
     })
     response.content_type = "application/json"
     return response
