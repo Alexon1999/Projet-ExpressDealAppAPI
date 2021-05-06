@@ -8,6 +8,8 @@
 
 ## <center>**Etapes à suivre**</center>
 
+- ### Clonez le repo: `git clone git@github.com:Alexon1999/Projet-ExpressDealAppAPI.git`
+
 - ### Il est conseillé d'utiliser un environement virtuel pour les projet python . Dans votre terminal, placez-vous dans le même dossier que app.py
 - ### Créer un environnement virtuel `python -m venv env`
 
