@@ -1,4 +1,4 @@
-<h1 style="text-align:center; font-weight:bold;"> Express Deal Api </h1>
+<h1 style="text-align:center; font-weight:bold; color:#51c4d3"> Express Deal Api </h1>
 
 #### Cette api est fait avec **Flask** (python web framework)
 
@@ -6,7 +6,7 @@
 
 <br>
 
-## **Etapes à suivre**
+## <center>**Etapes à suivre**</center>
 
 - ### Il est conseillé d'utiliser un environement virtuel pour les projet python . Dans votre terminal, placez-vous dans le même dossier que app.py
 - ### Créer un environnement virtuel `python -m venv env`
