@@ -93,4 +93,6 @@ class Magasin:
 
 # m = Materiel(1, "drdf", "ihi", " ihi ", 4, 23.46, 316.65, "Petit", 5, "sdvbn")
 # print(m.__dict__)
-# {'materielId': 1, 'nom': 'drdf', 'description': 'ihi', 'marque': ' ihi ', 'dureeLocation': 4, 'coutLocation': 23.46, 'coutRemplacement': 316.65, 'taille': 'Petit', 'categorie': {'Id': 5, 'Nom': 'sdvbn'}}
+# { 'materielId': 1, 'nom': 'drdf', 'description': 'ihi', 'marque': ' ihi ', 'dureeLocation': 4,
+# 'coutLocation': 23.46, 'coutRemplacement': 316.65, 'taille': 'Petit',
+# 'categorie': {'Id': 5, 'Nom': 'sdvbn'} }

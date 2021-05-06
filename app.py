@@ -1,6 +1,7 @@
 import os
 import json
 from flask import Flask, render_template, request, Response, jsonify
+from pymysql import cursors
 from werkzeug.exceptions import HTTPException
 import utils
 from models import Categorie, Client, Inventaire, Location, Materiel
@@ -24,6 +25,7 @@ def index():
     return Response(json.dumps({"message": "Bienvenue à notre API 🙂"}), status=200)
 
 
+# se connecter
 @app.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
@@ -52,7 +54,7 @@ def login():
 
     employe_id, nom, prenom, adresse_id, image_url, email, magasin_id, actif, *_ = employe
 
-    return Response(json.dumps({"id": employe_id, "nom": nom, "prenom": prenom, "image_url": image_url, "email": email,  "adresseId":  adresse_id, "magasinId": magasin_id, actif: actif == 1, "autoriser": True, "error": None}), mimetype='application/json', status=200)
+    return Response(json.dumps({"id": employe_id, "nom": nom, "prenom": prenom, "image_url": image_url, "email": email,  "adresseId":  adresse_id, "magasinId": magasin_id, "actif": actif == 1, "autoriser": True, "error": None}), mimetype='application/json', status=200)
 
 
 # on envoient une list de materiel dans l'inventaire d'un magasin en particulier
@@ -73,6 +75,7 @@ def inventaire_magasin(id_magasin):
     return Response(json.dumps(json_data), mimetype='application/json', status=200)
 
 
+# avoir le détail d'un materiel
 @app.route('/materiel/<int:id_materiel>', methods=['GET'])
 def materiel_detail(id_materiel):
     cursor = cnx.cursor()
@@ -87,9 +90,11 @@ def materiel_detail(id_materiel):
 
     materiel = Materiel(data[0], data[2], data[3],
                         data[4], data[5], data[6], data[7], data[8], data[10], data[11])
+
     return Response(materiel.to_json(), mimetype='application/json', status=200)
 
 
+# une liste avec tous les noms du matereils
 @app.route('/get_nom_materiels', methods=['GET'])
 def get_nom_materiels():
     cursor = cnx.cursor()
@@ -103,6 +108,7 @@ def get_nom_materiels():
     return Response(json.dumps(materiels), mimetype='application/json', status=200)
 
 
+# liste avec id et nom categorie
 @app.route('/get_categories', methods=['GET'])
 def get_categories():
     cursor = cnx.cursor()
@@ -126,6 +132,7 @@ def get_locations(id_magasin):
     data = cursor.fetchall()
     cursor.close()
 
+    # loc est un tuple, *loc : spreading tuple
     locations = [Location(*loc).to_dict() for loc in data]
     print(locations)
 
@@ -160,9 +167,8 @@ def get_clients_magasin(id_magasin):
 
     return Response(json.dumps(clients), mimetype='application/json', status=200)
 
+
 # Avoir les matereils disponible dans inventaire (inventaire_id n'est pas dans location or date_retour IS NOT NULL) d'un magasin
-
-
 @app.route('/get_materiels_dispo/<int:id_magasin>', methods=['GET'])
 def get_materiels_dispo(id_magasin):
     cursor = cnx.cursor()
@@ -177,7 +183,7 @@ def get_materiels_dispo(id_magasin):
     return Response(json.dumps(inventaire), mimetype='application/json', status=200)
 
 
-# Insertion
+# + Insertion
 
 @app.route('/create_materiel', methods=['POST'])
 def create_materiel():
@@ -238,7 +244,8 @@ def materiels_par_magasin_employe():
     return Response(json.dumps({"message": "ok"}), mimetype='application/json', status=201)
 
 
-# modification
+# + modification
+
 @app.route('/update_materiel', methods=['POST'])
 def update_materiel():
     data = request.get_json()
@@ -260,10 +267,59 @@ def update_materiel():
 
     return Response(json.dumps({"message": "ok"}), mimetype='application/json', status=202)
 
+
+# + Statistique (fait avec des vues SQL)
+
+# nombre de matériels empruntés sur le jour courant par magasin
+@ app.route('/get_nb_locations_aujourdhui', methods=['GET'])
+def get_nb_location_aujourdhui():
+    cursor = cnx.cursor()
+    # utilisation de la vue, recupere id magasin et nombre de locations
+    cursor.execute('SELECT * FROM get_nb_locations_aujourdhui_par_magasin;')
+    data = cursor.fetchall()
+
+    cursor.close()
+
+    data = [{"magasinId": row[0], "nbLocations": row[1]} for row in data]
+
+    return Response(json.dumps(data), mimetype='application/json', status=200)
+
+
+# le magasin avec plus de chiffre d'affaire
+@ app.route('/get_magasin_plus_CA', methods=['GET'])
+def get_magasin_plus_CA():
+    cursor = cnx.cursor()
+    cursor.execute('SELECT * FROM magain_tries_par_ca')
+    data = cursor.fetchone()
+
+    return Response(json.dumps({"magasinId": data[0], 'CA': round(data[1], 2)}), status=200, mimetype='application/json')
+
+
+# materiel le plus et le moins empruntés par magsin
+@app.route('/get_materiel_plus_moins_empruntes', methods=['GET'])
+def get_materiel_plus_moins_empruntes():
+    cursor = cnx.cursor()
+    cursor.execute('SELECT * FROM materiel_tries_par_nbemprunts')
+    data = cursor.fetchall()
+    cursor.close()
+    if len(data):
+        materiel_plus_empruntes = {
+            "idMateriel": data[0][0], "nomMateriel": data[0][1], "nbEmprunts": data[0][2]}
+        materiel_moins_empruntes = {
+            "idMateriel": data[-1][0], "nomMateriel": data[-1][1], "nbEmprunts": data[-1][2]}
+
+        return Response(json.dumps({"materielPlusEmpruntes": materiel_plus_empruntes,
+                                    "materielMoinsEmpruntes": materiel_moins_empruntes
+                                    }),
+                        status=200, mimetype='application/json')
+
+    return Response(json.dumps({"message": "Aucun Elements touvés"}), status=404, mimetype='application/json')
+
+
 # Error
 
 
-@app.errorhandler(HTTPException)
+@ app.errorhandler(HTTPException)
 def handle_exception(e):
     """Return JSON instead of HTML for HTTP errors."""
     # start with the correct headers and status code from the error

@@ -89,7 +89,7 @@ def index():
     # + -> fetchone() : first row
     # + -> fetchall() : all the rows (tuple inside tuples)
 
-    # ? insert,update,delet returns no row , samething for select , if there are no row
+    # ? insert,update,delet returns no row , samething for select, functions/procedures , if there are no row
     # so fetchone() -> None
     # fetchall() -> () empty tuple
 
