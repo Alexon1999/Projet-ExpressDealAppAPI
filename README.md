@@ -1,4 +1,4 @@
-# <h1>**Express Deal Api**</h1>
+# <center>**Express Deal Api**</center>
 
 #### Cette api est fait avec **Flask** (python web framework)
 
@@ -52,8 +52,3 @@ ngrok http 3000
 ngrok : https://ngrok.com/
 
 ```
-
-h1{
-text-align: center,
-color: #51c4d3
-}
