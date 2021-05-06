@@ -33,11 +33,9 @@
 <br>
 <br>
 
-## Pour tester l'API, utilisez **Postman** (Http client)
-
-### Vous pouvez importer la collection
-
-### lien de la colllection : https://www.getpostman.com/collections/f405ac7cc581fba81eec
+> ## Pour tester l'API, utilisez **Postman** (Http client)
+> ### Vous pouvez importer la collection
+> ### lien de la colllection : https://www.getpostman.com/collections/f405ac7cc581fba81eec
 
 <br>
 <br>
