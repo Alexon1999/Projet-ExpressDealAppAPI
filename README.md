@@ -8,7 +8,7 @@
 
 ## **Etapes à suivre**
 
-- ### Il est conseillé d'utiliser un environement virtuel pour les projet python . Dans votre terminal vous Dans le même dossier que app.py
+- ### Il est conseillé d'utiliser un environement virtuel pour les projet python . Dans votre terminal, placez-vous dans le même dossier que app.py
 - ### Créer un environnement virtuel `python -m venv env`
 
 - ### Activez votre environnement
