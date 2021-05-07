@@ -320,8 +320,6 @@ def get_client_fidele():
 
 
 # le magasin avec plus de chiffre d'affaire
-
-
 @app.route('/get_magasin_plus_CA', methods=['GET'])
 def get_magasin_plus_ca():
     cursor = cnx.cursor()
@@ -330,9 +328,8 @@ def get_magasin_plus_ca():
 
     return Response(json.dumps({"magasinId": data[0], 'CA': round(data[1], 2)}), status=200, mimetype='application/json')
 
+
 # Error
-
-
 @app.errorhandler(HTTPException)
 def handle_exception(error):
     """Return JSON instead of HTML for HTTP errors."""
