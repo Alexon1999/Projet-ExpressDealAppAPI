@@ -42,13 +42,16 @@
 <br>
 <br>
 
+#### pour l'application Xamarin, les requetes avec localhost ne marchent pas
+#### mettez l'URL obtenu par ngrok ou tunnelto dans votre code
 ### **make your local webserver public without deploy**
 
-```
-tunnelto.dev : https://tunnelto.dev/#download
-tunnelto --port 3000 --subdomain express_deal_api
 
+```
 ngrok http 3000
 ngrok : https://ngrok.com/
+
+tunnelto.dev : https://tunnelto.dev/#download
+tunnelto --port 3000 --subdomain express_deal_api
 
 ```
