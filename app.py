@@ -23,7 +23,7 @@ cnx = utils.connect_to_mysql_database(
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    return Response(json.dumps({"message": "Bienvenue à notre API 🙂"}), status=200)
+    return Response(json.dumps({"message": "Bienvenue à notre API 🙂"}), status=200, mimetype='application/json')
 
 
 # se connecter
