@@ -48,7 +48,7 @@
 
 
 ```
-ngrok http 3000
+./ngrok.exe http 3000
 ngrok : https://ngrok.com/
 
 tunnelto.dev : https://tunnelto.dev/#download
