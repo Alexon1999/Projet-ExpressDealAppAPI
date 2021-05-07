@@ -194,17 +194,27 @@ CREATE TRIGGER paiement_date BEFORE INSERT ON paiement
 	FOR EACH ROW SET NEW.paiement_date = NOW();
 
 
+-- Statistiques Vues
 
--- 1) get_nb_locations_aujourdhui_par_magasin
+-- utilisation d'un vue : select * from client_fidele
+
+-- 1) le materiel le plus et moins empruntes
+CREATE OR REPLACE VIEW materiel_tries_par_nbEmprunts AS select m.materiel_id, m.nom, count(m.materiel_id) AS emprunts from location l INNER JOIN employe e ON e.employe_id = l.employe_id INNER JOIN inventaire i on i.inventaire_id= l.inventaire_id INNER JOIN materiel m on m.materiel_id = i.materiel_id GROUP BY m.materiel_id ORDER BY emprunts DESC
+
+-- 2) get_nb_locations_aujourdhui_par_magasin
 CREATE VIEW get_nb_locations_aujourdhui_par_magasin as
 select e.magasin_id, count(*) from location l INNER JOIN employe e ON e.employe_id = l.employe_id where YEAR(l.date_location) = YEAR(now()) AND MONTH(l.date_location) = MONTH(NOW()) AND DAY(l.date_location) = DAY(NOW()) GROUP BY e.magasin_id
 
--- 2) magain_tries_par_ca
+
+-- 4) le client fidèle (plus de locations avec plus de retours)
+CREATE VIEW client_fidele AS
+SELECT l.client_id, c.nom, c.prenom, ,COUNT(*) AS nb_locs, COUNT(l.date_retour) AS nb_returned_locs FROM location l INNER JOIN client c ON c.client_id=l.client_id GROUP BY l.client_id ORDER BY nb_locs DESC , nb_returned_locs DESC
+
+
+-- 5) le magasin qui fait plus de chiffre d'affaire
 CREATE VIEW magain_tries_par_CA as
 select e.magasin_id, SUM(m.cout_location) as CA from location l INNER JOIN employe e ON e.employe_id = l.employe_id INNER JOIN inventaire i on i.inventaire_id= l.inventaire_id INNER JOIN materiel m on m.materiel_id = i.materiel_id  GROUP BY e.magasin_id ORDER BY CA DESC
 
-
-CREATE OR REPLACE VIEW materiel_tries_par_nbEmprunts AS select m.materiel_id, m.nom, count(m.materiel_id) AS emprunts from location l INNER JOIN employe e ON e.employe_id = l.employe_id INNER JOIN inventaire i on i.inventaire_id= l.inventaire_id INNER JOIN materiel m on m.materiel_id = i.materiel_id GROUP BY m.materiel_id ORDER BY emprunts DESC
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;

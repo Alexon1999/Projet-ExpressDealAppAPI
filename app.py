@@ -271,31 +271,6 @@ def update_materiel():
 
 # + Statistique (fait avec des vues SQL)
 
-# nombre de matériels empruntés sur le jour courant par magasin
-@ app.route('/get_nb_locations_aujourdhui', methods=['GET'])
-def get_nb_location_aujourdhui():
-    cursor = cnx.cursor()
-    # utilisation de la vue, recupere id magasin et nombre de locations
-    cursor.execute('SELECT * FROM get_nb_locations_aujourdhui_par_magasin;')
-    data = cursor.fetchall()
-
-    cursor.close()
-
-    data = [{"magasinId": row[0], "nbLocations": row[1]} for row in data]
-
-    return Response(json.dumps(data), mimetype='application/json', status=200)
-
-
-# le magasin avec plus de chiffre d'affaire
-@ app.route('/get_magasin_plus_CA', methods=['GET'])
-def get_magasin_plus_ca():
-    cursor = cnx.cursor()
-    cursor.execute('SELECT * FROM magain_tries_par_ca')
-    data = cursor.fetchone()
-
-    return Response(json.dumps({"magasinId": data[0], 'CA': round(data[1], 2)}), status=200, mimetype='application/json')
-
-
 # materiel le plus et le moins empruntés par magsin
 @app.route('/get_materiel_plus_moins_empruntes', methods=['GET'])
 def get_materiel_plus_moins_empruntes():
@@ -317,10 +292,48 @@ def get_materiel_plus_moins_empruntes():
     return Response(json.dumps({"message": "Aucun Elements touvés"}), status=404, mimetype='application/json')
 
 
+# nombre de matériels empruntés sur le jour courant par magasin
+@app.route('/get_nb_locations_aujourdhui', methods=['GET'])
+def get_nb_location_aujourdhui():
+    cursor = cnx.cursor()
+    # utilisation de la vue, recupere id magasin et nombre de locations
+    cursor.execute('SELECT * FROM get_nb_locations_aujourdhui_par_magasin;')
+    data = cursor.fetchall()
+
+    cursor.close()
+
+    data = [{"magasinId": row[0], "nbLocations": row[1]} for row in data]
+
+    return Response(json.dumps(data), mimetype='application/json', status=200)
+
+
+# le client fidèle
+@app.route('/get_client_fidele', methods=['GET'])
+def get_client_fidele():
+    cursor = cnx.cursor()
+    cursor.execute('select * from client_fidele')
+
+    data = cursor.fetchone()
+    client = Client(data[0], data[1], data[2])
+
+    return Response(client.to_json(), status=200, mimetype='application/json')
+
+
+# le magasin avec plus de chiffre d'affaire
+
+
+@app.route('/get_magasin_plus_CA', methods=['GET'])
+def get_magasin_plus_ca():
+    cursor = cnx.cursor()
+    cursor.execute('SELECT * FROM magain_tries_par_ca')
+    data = cursor.fetchone()
+
+    return Response(json.dumps({"magasinId": data[0], 'CA': round(data[1], 2)}), status=200, mimetype='application/json')
+
 # Error
 
 
-@ app.errorhandler(HTTPException)
+@app.errorhandler(HTTPException)
 def handle_exception(error):
     """Return JSON instead of HTML for HTTP errors."""
     # start with the correct headers and status code from the error
