@@ -71,28 +71,39 @@ class Magasin:
 
 # https://pythonexamples.org/convert-python-class-object-to-json/
 # convert object to dictionnary and json
+
+
 # class Laptop:
+#     detail = "good"
+
 #     def __init__(self):
 #         self.name = "my laptop"
-#         self.processor = "oll"
+#         self.processor = "amd"
 
 
-# # create object
+# # # create object (Laptop object)
 # laptop1 = Laptop()
 
-# # laptop1.name = 'Dell Alienware'
-# # laptop1.processor = 'Intel Core i7'
+# laptop1.name = 'Dell Alienware'
+# laptop1.processor = 'Intel Core i7'
 
-# # convert to JSON string
-# # laptop1.__dict__ ->  dictionnary {"name" : 'Dell Alienware' , "processor" : 'Intel Core i7'}
+# print(type(laptop1.__dict__))  # dictionary: <class 'dict'>
+# print(laptop1.__dict__)
+# # {"name" : 'Dell Alienware' , "processor" : 'Intel Core i7'}
+
+# # # convert to JSON string
 # jsonStr = json.dumps(laptop1.__dict__, indent=2)
 
-# # print json string
+# # # print json string
 # print(jsonStr)
 
 
+# print(Laptop.__dict__)
+# {'__module__': '__main__', 'detail': 'good', '__init__': <function Laptop.__init__ at 0x000001AE004C3160>, '__dict__': <attribute '__dict__' of 'Laptop' objects>, '__weakref__': <attribute '__weakref__' of 'Laptop' objects>, '__doc__': None}
+
 # m = Materiel(1, "drdf", "ihi", " ihi ", 4, 23.46, 316.65, "Petit", 5, "sdvbn")
 # print(m.__dict__)
-# { 'materielId': 1, 'nom': 'drdf', 'description': 'ihi', 'marque': ' ihi ', 'dureeLocation': 4,
-# 'coutLocation': 23.46, 'coutRemplacement': 316.65, 'taille': 'Petit',
-# 'categorie': {'Id': 5, 'Nom': 'sdvbn'} }
+# print(m.to_dict())
+# {'materielId': 1, 'nom': 'drdf', 'description': 'ihi', 'marque': ' ihi ', 'dureeLocation': 4,
+#  'coutLocation': 23.46, 'coutRemplacement': 316.65, 'taille': 'Petit',
+#  'categorie': {'Id': 5, 'Nom': 'sdvbn'}}
