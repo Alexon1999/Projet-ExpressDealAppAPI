@@ -1,6 +1,9 @@
 import json
 from utils import truncate
 
+# Sakila Database
+# https://dev.mysql.com/doc/sakila/en/sakila-structure.html
+
 
 class JsonSerialize:
     # take the dictionnary and transform to json formatted string
