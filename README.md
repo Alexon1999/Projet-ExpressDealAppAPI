@@ -37,7 +37,7 @@
 
 > ## Pour tester l'API, utilisez **Postman** (Http client)
 > ### Vous pouvez importer la collection
-> ### lien de la colllection : https://www.getpostman.com/collections/f405ac7cc581fba81eec
+> ### lien de la collection : https://www.getpostman.com/collections/f405ac7cc581fba81eec
 
 <br>
 <br>
@@ -48,8 +48,12 @@
 
 
 ```
+Dans votre terminal 💻 :
+
 ./ngrok.exe http 3000
 ngrok : https://ngrok.com/
+
+ ou
 
 tunnelto.dev : https://tunnelto.dev/#download
 tunnelto --port 3000 --subdomain express_deal_api
