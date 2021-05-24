@@ -50,12 +50,12 @@
 ```
 Dans votre terminal 💻 :
 
+ngrok (https://ngrok.com/)
 ./ngrok.exe http 3000
-ngrok : https://ngrok.com/
 
  ou
 
-tunnelto.dev : https://tunnelto.dev/#download
+tunnelto.dev (https://tunnelto.dev/#download)
 tunnelto --port 3000 --subdomain express_deal_api
 
 ```
